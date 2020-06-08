@@ -1,5 +1,6 @@
 # fxlnk
-fxlnk url shortener with manage links and qr generator
+fxlnk url shortener with manage links and qr generator.
+
 fxlnk es un proyecto demo con las siguientes caracteristicas.
 
 FUNCIONALES
