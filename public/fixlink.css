@@ -1,0 +1,32 @@
+body {
+    background-color: white;
+  }
+  
+  h1 {
+    color: white;
+    text-align: center;
+  }
+  
+  p {
+    font-family: verdana;
+    font-size: 20px;
+  }
+
+  #blankblock {
+    background-color: white;
+  }
+
+  #cabecera {
+    background-color: red;
+  }
+
+  #logo {
+    background-color: blue;
+  }
+
+  #menu {
+    background-color: greenyellow;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 2.5em; /*aprox 40px*/
+    color: lightskyblue;
+  }
