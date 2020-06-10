@@ -1,0 +1,20 @@
+{
+  "name": "fxlnk",
+  "version": "1.0.0",
+  "description": "FxLnk links fixed to variable hyperlinks",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmartingi/fxlnk.git"
+  },
+  "author": "Javier Martín Gil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmartingi/fxlnk/issues"
+  },
+  "homepage": "https://github.com/jmartingi/fxlnk#readme"
+}

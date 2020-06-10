@@ -1,4 +1,3 @@
-
     function inicia_cut () {
                // Html elements
                const url_cut = document.querySelector('#url_cut');
@@ -18,7 +17,10 @@
                     {
                         let data = { a: url_cut.value };
 
-                        fetch('http://localhost:8888/crearcutlink', {
+                        //al hospedarse en el mismo server no hace falta hacer
+                        //el fetch indicando ip y puerto con hacer llamada a la función a enrutar vale
+                        //de este modo al subirlo a un server y dejar de trabajar en local funcionara sin hacer cambios
+                        fetch('crearcutlink', {
                             method: "POST",
                             body: JSON.stringify(data)
                         })
@@ -67,15 +69,5 @@
                 qrcode.makeCode(document.getElementById("urlqr").value);
             }
             
-            //makeCode();
             
-            $("#text").
-                on("blur", function () {
-                    makeCode();
-                }).
-                on("keydown", function (e) {
-                    if (e.keyCode == 13) {
-                        makeCode();
-                    }
-                });
             

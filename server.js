@@ -4,6 +4,8 @@ var fs=require('fs');
 var querystring = require('querystring');
 var rutaweb;
 var rutahost;
+var port = process.env.PORT || 8888;
+var ip = process.env.IP || '127.0.0.1';
 
 var mime = {
    'html' : 'text/html',
@@ -21,10 +23,10 @@ var servidor=http.createServer(function(pedido,respuesta){
 	var camino='public'+objetourl.pathname;
 	if (camino=='public/')
 		camino='public/index.html';
-	encaminar(pedido,respuesta,camino);
+	encaminar(pedido, respuesta, camino);	
 });
 
-servidor.listen(8888);
+servidor.listen(port,ip);
 
 
 function encaminar (pedido,respuesta,camino) {
@@ -523,4 +525,4 @@ function listarTablaMultiplicar(pedido,respuesta) {
 } */
 
 
-console.log('Servidor web iniciado');
+console.log('Servidor web iniciado en -> ' + ip + ':' + port );

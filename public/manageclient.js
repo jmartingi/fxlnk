@@ -17,7 +17,7 @@
                 btn.addEventListener('click', () => {
                     let data = { a: mail.value };
 
-                    fetch('http://localhost:8888/mixfixlink', {
+                    fetch('mixfixlink', {
                         method: "POST",
                         body: JSON.stringify(data)
                     })
@@ -170,7 +170,7 @@
                     {
                         let data = { a: fxlnkedit.value, b: claveedit.value, c:vinculoedit.value };
 
-                        fetch('http://localhost:8888/editfixlink', {
+                        fetch('editfixlink', {
                             method: "POST",
                             body: JSON.stringify(data)
                         })
@@ -206,7 +206,7 @@
                btnconfirmdelete.addEventListener('click', () => {
                     let data = { a: fxlnkdelete.value, b: clavedelete.value };
 
-                    fetch('http://localhost:8888/deletefixlink', {
+                    fetch('deletefixlink', {
                         method: "POST",
                         body: JSON.stringify(data)
                     })

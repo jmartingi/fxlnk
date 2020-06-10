@@ -20,7 +20,7 @@
 
                         let data = { a: url_envia.value, b: mail_envia.value, c:clave_envia.value };
         
-                        fetch('http://localhost:8888/crearfixlink', {
+                        fetch('crearfixlink', {
                             method: "POST",
                             body: JSON.stringify(data)
                         })
@@ -74,17 +74,7 @@
                 qrcode.makeCode(document.getElementById("urlqr").value);
             }
             
-            /*makeCode();
-            
-            $("#text").
-                on("blur", function () {
-                    makeCode();
-                }).
-                on("keydown", function (e) {
-                    if (e.keyCode == 13) {
-                        makeCode();
-                    }
-                });*/
+           
         
             
          
