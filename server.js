@@ -5,7 +5,7 @@ var querystring = require('querystring');
 var rutaweb;
 var rutahost;
 var port = process.env.PORT || 8888;
-var ip = process.env.IP || '127.0.0.1';
+//var ip = process.env.IP || '127.0.0.1';
 
 var mime = {
    'html' : 'text/html',
@@ -26,7 +26,7 @@ var servidor=http.createServer(function(pedido,respuesta){
 	encaminar(pedido, respuesta, camino);	
 });
 
-servidor.listen(port,ip);
+servidor.listen(port);
 
 
 function encaminar (pedido,respuesta,camino) {
@@ -525,4 +525,4 @@ function listarTablaMultiplicar(pedido,respuesta) {
 } */
 
 
-console.log('Servidor web iniciado en -> ' + ip + ':' + port );
+console.log('Servidor web iniciado en el puerto-> :' + port );
