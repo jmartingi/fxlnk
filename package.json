@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jmartingi/fxlnk/issues"
   },
-  "homepage": "https://github.com/jmartingi/fxlnk#readme"
+  "homepage": "https://github.com/jmartingi/fxlnk#readme",
+  "dependencies": {
+    "nodemailer": "6.4.8"
+  }
 }
