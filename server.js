@@ -5,7 +5,9 @@ var querystring = require('querystring');
 var rutaweb;
 var rutahost;
 var port = process.env.PORT || 8888;
-//var ip = process.env.IP || '127.0.0.1';
+var nodemail = require('nodemailer');
+var jsontotable = require('./public/json_totable.js');
+
 
 var mime = {
    'html' : 'text/html',
@@ -65,6 +67,21 @@ function encaminar (pedido,respuesta,camino) {
 			}			
 			break;
 		}	
+		case 'public/recuperaclave': {
+			var param = {};
+			if (pedido.method == 'POST') {
+				pedido.on('data', function (data) {
+					data = data.toString();
+					console.log(JSON.parse(data));
+					mensajevuelta = envia_mailclave(pedido, respuesta, JSON.parse(data).a);
+					let vuelta = { element: mensajevuelta };
+					respuesta.writeHead(200, { 'Content-Type': 'text/json' });
+					respuesta.write(JSON.stringify(vuelta));
+					respuesta.end();
+				})
+			}
+			break;
+		}
 		case 'public/mixfixlink': {
 			var param = {};
 			if (pedido.method == 'POST') {
@@ -153,6 +170,80 @@ function encaminar (pedido,respuesta,camino) {
 		}
 	}	
 }
+//función que devuelve un mail con el html de tus fixlinks incluida la clave
+function envia_mailclave(pedido, respuesta, mail) {
+	try {
+		var resultado = '';
+		var htmlmail = '';
+
+		var datosmail = JSON.parse(fs.readFileSync('./pwdmail.json', 'utf8'));
+		var json = JSON.parse(fs.readFileSync('./fixlinks.json', 'utf8'));
+		//filtro el json para obtener solo los fixlinks del mail que hemos recibiod del cliente
+		var filtered = json.filter(a => a.email == mail);
+		//borro el campo click del json de momento irrelevante
+		filtered.forEach(function (x) { delete x.click }); filtered.forEach(function (x) { delete x.email });
+
+		//respuesta.writeHead(200, { 'Content-Type': 'text/json' });
+		//respuesta.write(JSON.stringify(filtered));
+		//respuesta.end();
+		
+		htmltabla = jsontotable.ConvertJsonToTable(filtered, 'mailclave',null);
+		htmlplantilla = fs.readFileSync('./mail/plantillamail.html', 'utf8');
+		htmlmail = htmlplantilla.replace('@tabla', htmltabla);
+
+		if (enviamail(mail, htmlmail, datosmail[0].mail, datosmail[0].pwd ) == true){
+			resultado = 'Mail enviado'
+		} else {
+			resultado = 'No se pudo enviar email por favor contacte con info@fxlnk.es'
+        }
+
+
+	}catch (error) {
+		resultado = error;
+		console.log(error);
+	}
+	return resultado;
+}
+
+function enviamail(para, htmlcontenido, correo, pwd) {
+	try {
+		var estado = true;
+
+		var transporter = nodemail.createTransport({
+			host: 'smtp.fxlnk.es',
+			port: 587,
+			secure: false,
+			tls: {
+			rejectUnauthorized: false
+			},
+			auth: {
+				user: correo,
+				pass: pwd
+			}
+		});
+
+		var mailOptions = {
+			from: 'info@fxlnk.es',
+			to: para,
+			subject: 'FixLink - FxLnk.es Recuperación de clave',
+			html: htmlcontenido
+		};
+
+		transporter.sendMail(mailOptions, function (error, info) {
+			if (error) {
+				console.log(error);
+				estado = false;
+			} else {
+				console.log('Email sent: ' + info.response);
+				estado = true;
+			}
+		});
+
+	} catch (error) {
+		estado = false;
+	}
+	return estado;
+}
 
 function editfixlink(pedido,respuesta,fixlink,clave,newvinculo){
 	try {
@@ -176,10 +267,10 @@ function editfixlink(pedido,respuesta,fixlink,clave,newvinculo){
 			}
 		}
 		if (resultado == ''){resultado = 'No existe el FixLink introducido';}
-		} catch (error) {
-			resultado = error;		
-		}
-			return resultado;
+	} catch (error) {
+		resultado = error;		
+	}
+		return resultado;
 }
 
 

@@ -69,7 +69,7 @@
                             
                             //cargo en el div el html con la tabla
 
-                            dom_tab_fxlnk.innerHTML = ConvertJsonToTable(misfxlnk, 'jsonTable', null);
+                            dom_tab_fxlnk.innerHTML = Convert_JsonToTable(misfxlnk, 'jsonTable', null);
 
 
                             //añado columna edición
@@ -298,7 +298,32 @@ function edittbl(row){
 
 }
 
+function iniciarecupera() {
 
+    // Html elements
+    const mailrecupera = document.querySelector('#mail_recupera');
+    const btnrecupera = document.querySelector('#btn_recupera');
+
+
+    //
+    // btn button handler
+    //
+    btnrecupera.addEventListener('click', () => {
+        let data = { a: mailrecupera.value };
+
+        fetch('recuperaclave', {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                respuesta = data;
+                alertify.alert(respuesta.element);
+            });
+
+    });
+
+}
 
 
 //handler botones edición y borrado para hacer visible div

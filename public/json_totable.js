@@ -1,3 +1,4 @@
+
 /**
  * JavaScript format string function
  * 
@@ -46,20 +47,22 @@ String.prototype.format = function()
  * @param linkText string Optional text replacement for link pattern
  *  
  * @return string Converted JSON to HTML table
+ * 
+ * 
  */
-function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText)
-{
+
+function Convert_JsonToTable(parsedJson, tableId, tableClassName, linkText) {
     //Patterns for links and NULL value
     var italic = '<i>{0}</i>';
     var link = linkText ? '<a href="{0}">' + linkText + '</a>' :
-                          '<a href="{0}">{0}</a>';
+        '<a href="{0}">{0}</a>';
 
     //Pattern for table                          
     var idMarkup = tableId ? ' id="' + tableId + '"' :
-                             '';
+        '';
 
     var classMarkup = tableClassName ? ' class="' + tableClassName + '"' :
-                                       '';
+        '';
 
     var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
 
@@ -73,20 +76,17 @@ function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText)
     var tbCon = '';
     var trCon = '';
 
-    if (parsedJson)
-    {
-        var isStringArray = typeof(parsedJson[0]) == 'string';
+    if (parsedJson) {
+        var isStringArray = typeof (parsedJson[0]) == 'string';
         var headers;
 
         // Create table headers from JSON data
         // If JSON data is a simple string array we create a single table header
-        if(isStringArray)
+        if (isStringArray)
             thCon += thRow.format('value');
-        else
-        {
+        else {
             // If JSON data is an object array, headers are automatically computed
-            if(typeof(parsedJson[0]) == 'object')
-            {
+            if (typeof (parsedJson[0]) == 'object') {
                 headers = array_keys(parsedJson[0]);
 
                 for (var i = 0; i < headers.length; i++)
@@ -94,43 +94,36 @@ function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText)
             }
         }
         th = th.format(tr.format(thCon));
-        
+
         // Create table rows from Json data
-        if(isStringArray)
-        {
-            for (var i = 0; i < parsedJson.length; i++)
-            {
+        if (isStringArray) {
+            for (var i = 0; i < parsedJson.length; i++) {
                 tbCon += tdRow.format(parsedJson[i]);
                 trCon += tr.format(tbCon);
                 tbCon = '';
             }
         }
-        else
-        {
-            if(headers)
-            {
+        else {
+            if (headers) {
                 var urlRegExp = new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
                 var javascriptRegExp = new RegExp(/(^javascript:[\s\S]*;$)/ig);
-                
-                for (var i = 0; i < parsedJson.length; i++)
-                {
-                    for (var j = 0; j < headers.length; j++)
-                    {
+
+                for (var i = 0; i < parsedJson.length; i++) {
+                    for (var j = 0; j < headers.length; j++) {
                         var value = parsedJson[i][headers[j]];
                         var isUrl = urlRegExp.test(value) || javascriptRegExp.test(value);
 
-                        if(isUrl)   // If value is URL we auto-create a link
+                        if (isUrl)   // If value is URL we auto-create a link
                             tbCon += tdRow.format(link.format(value));
-                        else
-                        {
-                            if(value){
-                            	if(typeof(value) == 'object'){
-                            		//for supporting nested tables
-                            		tbCon += tdRow.format(ConvertJsonToTable(eval(value.data), value.tableId, value.tableClassName, value.linkText));
-                            	} else {
-                            		tbCon += tdRow.format(value);
-                            	}
-                                
+                        else {
+                            if (value) {
+                                if (typeof (value) == 'object') {
+                                    //for supporting nested tables
+                                    tbCon += tdRow.format(ConvertJsonToTable(eval(value.data), value.tableId, value.tableClassName, value.linkText));
+                                } else {
+                                    tbCon += tdRow.format(value);
+                                }
+
                             } else {    // If value == null we format it like PhpMyAdmin NULL values
                                 tbCon += tdRow.format(italic.format(value).toUpperCase());
                             }
@@ -149,6 +142,99 @@ function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText)
     return null;
 }
 
+
+module.exports = {
+    ConvertJsonToTable: function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText) {
+        //Patterns for links and NULL value
+        var italic = '<i>{0}</i>';
+        var link = linkText ? '<a href="{0}">' + linkText + '</a>' :
+            '<a href="{0}">{0}</a>';
+
+        //Pattern for table                          
+        var idMarkup = tableId ? ' id="' + tableId + '"' :
+            '';
+
+        var classMarkup = tableClassName ? ' class="' + tableClassName + '"' :
+            '';
+
+        var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
+
+        //Patterns for table content
+        var th = '<thead>{0}</thead>';
+        var tb = '<tbody>{0}</tbody>';
+        var tr = '<tr id="tr_jsontable" class="table-heads ">{0}</tr>';
+        var thRow = '<th class="head-item mbr-fonts-style display-7">{0}</th>';
+        var tdRow = '<td class="body-item mbr-fonts-style display-7">{0}</td>';
+        var thCon = '';
+        var tbCon = '';
+        var trCon = '';
+
+        if (parsedJson) {
+            var isStringArray = typeof (parsedJson[0]) == 'string';
+            var headers;
+
+            // Create table headers from JSON data
+            // If JSON data is a simple string array we create a single table header
+            if (isStringArray)
+                thCon += thRow.format('value');
+            else {
+                // If JSON data is an object array, headers are automatically computed
+                if (typeof (parsedJson[0]) == 'object') {
+                    headers = array_keys(parsedJson[0]);
+
+                    for (var i = 0; i < headers.length; i++)
+                        thCon += thRow.format(headers[i]);
+                }
+            }
+            th = th.format(tr.format(thCon));
+
+            // Create table rows from Json data
+            if (isStringArray) {
+                for (var i = 0; i < parsedJson.length; i++) {
+                    tbCon += tdRow.format(parsedJson[i]);
+                    trCon += tr.format(tbCon);
+                    tbCon = '';
+                }
+            }
+            else {
+                if (headers) {
+                    var urlRegExp = new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
+                    var javascriptRegExp = new RegExp(/(^javascript:[\s\S]*;$)/ig);
+
+                    for (var i = 0; i < parsedJson.length; i++) {
+                        for (var j = 0; j < headers.length; j++) {
+                            var value = parsedJson[i][headers[j]];
+                            var isUrl = urlRegExp.test(value) || javascriptRegExp.test(value);
+
+                            if (isUrl)   // If value is URL we auto-create a link
+                                tbCon += tdRow.format(link.format(value));
+                            else {
+                                if (value) {
+                                    if (typeof (value) == 'object') {
+                                        //for supporting nested tables
+                                        tbCon += tdRow.format(ConvertJsonToTable(eval(value.data), value.tableId, value.tableClassName, value.linkText));
+                                    } else {
+                                        tbCon += tdRow.format(value);
+                                    }
+
+                                } else {    // If value == null we format it like PhpMyAdmin NULL values
+                                    tbCon += tdRow.format(italic.format(value).toUpperCase());
+                                }
+                            }
+                        }
+                        trCon += tr.format(tbCon);
+                        tbCon = '';
+                    }
+                }
+            }
+            tb = tb.format(trCon);
+            tbl = tbl.format(th, tb);
+
+            return tbl;
+        }
+        return null;
+    }
+};
 
 /**
  * Return just the keys from the input array, optionally only for the specified search_value
