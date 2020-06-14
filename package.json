@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jmartingi/fxlnk#readme",
   "dependencies": {
-    "nodemailer": "6.4.8"
+    "nodemailer": "6.4.8",
+    "open": "7.0.4"
   }
 }

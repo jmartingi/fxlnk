@@ -7,6 +7,7 @@ var rutahost;
 var port = process.env.PORT || 8888;
 var nodemail = require('nodemailer');
 var jsontotable = require('./public/json_totable.js');
+var open = require('open');
 
 
 var mime = {
@@ -115,29 +116,20 @@ function encaminar (pedido,respuesta,camino) {
 			}			
 			break;
 		}	
-		case 'public/listadotabla': {
-			listarTablaMultiplicar(pedido,respuesta);
-			break;
-        }	
-        case 'public/damelink': {
+		case 'public/damelink': {
 			damelink(pedido,respuesta);
 			break;
 		}	
 		case 'public/flk': {
+			devuelveRedirect(pedido, respuesta);
 			//paso param flk en 3
-			navegar(pedido,respuesta,'flk');
-			break;
+			navegar(pedido, respuesta, 'flk');
+			break;			
 		}
 		case 'public/cut': {
-			//paso param flk en 3
+			devuelveRedirect(pedido, respuesta);
+			//paso param cut en 3
 			navegar(pedido,respuesta,'cut');
-			break;
-		}
-		case 'public/ajaxpruebajson': {
-			let data = {element: "caca "};
-			respuesta.writeHead(200, {'Content-Type': 'text/json'});
-			respuesta.write(JSON.stringify(data));
-			respuesta.end();
 			break;
 		}			
 	    default : {  
@@ -162,9 +154,7 @@ function encaminar (pedido,respuesta,camino) {
 						}
 					});
 				} else {
-					respuesta.writeHead(404, {'Content-Type': 'text/html'});
-					respuesta.write('<!doctype html><html><head></head><body>Recurso inexistente</body></html>');		
-					respuesta.end();
+					devuelve404(pedido, respuesta);
 				}
 			});	
 		}
@@ -517,50 +507,54 @@ function navegar(pedido,respuesta,opcion) {
 		//leo json cut
 		fich = './cutlinks.json';
 		param = 'cutlink';
-	}else{
-		devuelve404(pedido,respuesta);
-		//nose si meter break no se si continua al for
 	}
-	var json = JSON.parse(fs.readFileSync(fich, 'utf8'));
-	//busco en el json
-	for (i = 0; i < json.length; i++) {
-		if (opcion == 'flk'){
-			if (url.parse(json[i].fixlink,true).query.go == valor) {
-				console.log("Registro encontrado:" + json[i].vinculo)
-				vinc = json[i].vinculo;
-				break;
-			}
-		}else{
-			if (url.parse(json[i].cutlink,true).query.go == valor) {
-				console.log("Registro encontrado:" + json[i].vinculo)
-				vinc = json[i].vinculo;
-				break;
-			}
-		}
-		
-	  }
 	
 	
-	if (vinc==""){
-		//recurso no encontrado
-		//respuesta.writeHead(404, {'Content-Type': 'text/html'});
-		//respuesta.write('<!doctype html><html><head></head><body>Recurso inexistente</body></html>');		
-		//respuesta.end();
-		devuelve404(pedido,respuesta);
-		
-	}else{
-		//redirijo
-		if (vinc.substring(0,8)!= "https://" && vinc.substring(0,7)!= "http://")
-		{
-			vinc = "http://" + vinc
+		var json = JSON.parse(fs.readFileSync(fich, 'utf8'));
+		//busco en el json
+		for (i = 0; i < json.length; i++) {
+			
+			if (opcion == 'flk') {
+				if (url.parse(json[i].fixlink, true).query.go == valor) {
+					console.log("Registro encontrado:" + json[i].vinculo)
+					vinc = json[i].vinculo;
+					break;
+				}
+			} else {
+				if (url.parse(json[i].cutlink, true).query.go == valor) {
+					console.log("Registro encontrado:" + json[i].vinculo)
+					vinc = json[i].vinculo;
+					break;
+				}
+			}
+
 		}
-		console.log(vinc);
-		//averiguar - con 301 el navegador cachea y no vuelve a procesar la petición con 302 la pide siempre
-		respuesta.writeHead(302,
-			{Location: vinc}
-		);
-		respuesta.end();
-	}
+
+
+		if (vinc == "") {
+			//recurso no encontrado
+			//respuesta.writeHead(404, {'Content-Type': 'text/html'});
+			//respuesta.write('<!doctype html><html><head></head><body>Recurso inexistente</body></html>');		
+			//respuesta.end();
+			devuelve404(pedido, respuesta);
+
+		} else {
+			//redirijo
+			if (vinc.substring(0, 8) != "https://" && vinc.substring(0, 7) != "http://") {
+				vinc = "http://" + vinc
+			}
+			console.log(vinc);
+			//averiguar - con 301 el navegador cachea y no vuelve a procesar la petición con 302 la pide siempre
+			//respuesta.writeHead(302,
+			//	{Location: vinc}
+			//);
+			(async () => {
+				// Opens the URL in the default browser.
+				await open(vinc);
+			})();
+			//respuesta.end();
+		}
+	
 	
 }
 
@@ -591,6 +585,23 @@ function devuelve404(pedido,respuesta) {
           respuesta.end();
         }
       });
+}
+
+
+function devuelveRedirect(pedido, respuesta) {
+	var fs404 = require("fs");
+
+	fs404.readFile('PUBLIC/redirect.html', (error, contenido) => {
+		if (error) {
+			respuesta.writeHead(500, { 'Content-Type': 'text/plain' });
+			respuesta.write('Error interno');
+			respuesta.end();
+		} else {
+			respuesta.writeHead(200, { 'Content-Type': 'text/html' });
+			respuesta.write(contenido);
+			respuesta.end();
+		}
+	});
 }
 
 /* function listar(pedido,respuesta) {
