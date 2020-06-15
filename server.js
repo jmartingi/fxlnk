@@ -121,13 +121,13 @@ function encaminar (pedido,respuesta,camino) {
 			break;
 		}	
 		case 'public/flk': {
-			devuelveRedirect(pedido, respuesta);
+			//devuelveRedirect(pedido, respuesta);
 			//paso param flk en 3
 			navegar(pedido, respuesta, 'flk');
 			break;			
 		}
 		case 'public/cut': {
-			devuelveRedirect(pedido, respuesta);
+			//devuelveRedirect(pedido, respuesta);
 			//paso param cut en 3
 			navegar(pedido,respuesta,'cut');
 			break;
@@ -545,14 +545,14 @@ function navegar(pedido,respuesta,opcion) {
 			}
 			console.log(vinc);
 			//averiguar - con 301 el navegador cachea y no vuelve a procesar la petición con 302 la pide siempre
-			//respuesta.writeHead(302,
-			//	{Location: vinc}
-			//);
-			(async () => {
-				// Opens the URL in the default browser.
-				await open(vinc);
-			})();
-			//respuesta.end();
+			respuesta.writeHead(302,
+				{Location: vinc}
+			);
+			//(async () => {
+			//	// Opens the URL in the default browser.
+			//	await open(vinc);
+			//})();
+			respuesta.end();
 		}
 	
 	
