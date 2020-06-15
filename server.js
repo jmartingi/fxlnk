@@ -548,10 +548,11 @@ function navegar(pedido,respuesta,opcion) {
 			//respuesta.writeHead(302,
 			//	{Location: vinc}
 			//);
-			(async () => {
-				// Opens the URL in the default browser.
-				await open(vinc);
-			})();
+			//(async () => {
+			//	// Opens the URL in the default browser.
+			//	await open(vinc);
+			//})();
+			open(vinc);
 			//respuesta.end();
 		}
 	
