@@ -552,7 +552,7 @@ function navegar(pedido,respuesta,opcion) {
 			//	// Opens the URL in the default browser.
 			//	await open(vinc);
 			//})();
-			open(vinc);
+			require("openurl").open(vinc);
 			//respuesta.end();
 		}
 	
