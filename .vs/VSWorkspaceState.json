@@ -2,7 +2,6 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\public\\assets",
     "\\public\\assets\\socicon",
     "\\public\\assets\\tether",
     "\\public\\assets\\theme",
@@ -11,6 +10,6 @@
     "\\public\\assets\\touchswipe",
     "\\public\\assets\\web"
   ],
-  "SelectedNode": "\\server.js",
+  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }

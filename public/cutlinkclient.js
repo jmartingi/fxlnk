@@ -39,7 +39,7 @@
                         x.style.display = "block";
                     } 
                     x.innerHTML = '<h4 class="mbr-section-subtitle align-center pb-5 mbr-light mbr-fonts-style display-4">' +
-                                  '<a class="mbr-fonts-style">Tu url corta: </a>' +  
+                                  '<a class="mbr-fonts-style" style="justify-content: center; text-align: center; color:black">Tu url corta: </a>' +  
                                   '<a href =' + cutlinkrecibido.element + '>' + cutlinkrecibido.element + '</a>' +
                                   '</h4>';
 
