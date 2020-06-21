@@ -343,7 +343,7 @@ function devuelvecutlinkaleatorio(){
 	var id = crypto.randomBytes(2).toString('hex'); // "bb5dc8842ca31d4603d6aa11448d1654" 
 	console.log (id);
 	//rutahost + 'cut
-	var vinculo = 'www.testfxlnk.azurewebsites.net/cut?go=' + id; //+ dat.getMonth() + dat.getFullYear();
+	var vinculo = 'https://testfxlnk.azurewebsites.net/cut?go=' + id; //+ dat.getMonth() + dat.getFullYear();
 	
 	console.log(vinculo);
 	
