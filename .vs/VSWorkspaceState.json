@@ -1,15 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
-    "\\public\\assets\\socicon",
-    "\\public\\assets\\tether",
-    "\\public\\assets\\theme",
-    "\\public\\assets\\theme\\css",
-    "\\public\\assets\\theme\\js",
-    "\\public\\assets\\touchswipe",
-    "\\public\\assets\\web"
+    "\\public"
   ],
-  "SelectedNode": "\\package.json",
+  "SelectedNode": "\\public\\qrurl.html",
   "PreviewInSolutionExplorer": false
 }
