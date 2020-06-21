@@ -322,7 +322,7 @@ function devuelvefixlinkaleatorio(){
 	var id = crypto.randomBytes(2).toString('hex'); // "bb5dc8842ca31d4603d6aa11448d1654" 
 	console.log (id);
 
-	var vinculo = rutahost + 'flk?go=' + id; //+ dat2;
+	var vinculo = 'https://testflnk.azurewebsites.net/flk?go=' + id; //+ dat2;
 	
 	console.log(vinculo);
 	
@@ -342,8 +342,8 @@ function devuelvecutlinkaleatorio(){
 	var crypto = require("crypto"); 
 	var id = crypto.randomBytes(2).toString('hex'); // "bb5dc8842ca31d4603d6aa11448d1654" 
 	console.log (id);
-
-	var vinculo = rutahost + 'cut?go=' + id; //+ dat.getMonth() + dat.getFullYear();
+	//rutahost + 'cut
+	var vinculo = 'https://testfxlnk.azurewebsites.net/cut?go=' + id; //+ dat.getMonth() + dat.getFullYear();
 	
 	console.log(vinculo);
 	
