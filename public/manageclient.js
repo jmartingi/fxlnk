@@ -69,7 +69,7 @@
                             
                             //cargo en el div el html con la tabla
 
-                            dom_tab_fxlnk.innerHTML = Convert_JsonToTable(misfxlnk, 'jsonTable', null);
+                        dom_tab_fxlnk.innerHTML = Convert_JsonToTable(misfxlnk, 'jsonTable', 'table');
 
 
                             //añado columna edición
